@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css')}}">
+    <title>Document</title>
+</head>
+
+<body>
+    <section class="s-home">
+        <form action="{{ url_for('buscar_valor') }}" method="POST">
+            <div class="search-home">
+                <input type="text" name="input-search" required id="input-search"
+                    placeholder="{% if context %}{% if context.situacao == 'disp' %}Artista: {{context.nome}}{% elif  context.situacao == 'indi' %} não encontrado{% endif %} {% else %}Digite o nome...{% endif %}"
+                    data-aos="fade-right">
+                <button type="submit" class="btn-submit" data-aos="fade-left">
+                    <div class="img-search">
+                        <img src="{{ url_for('static', filename='img/search-svgrepo-com.svg')}}" alt="">
+                    </div>
+                </button>
+            </div>
+        </form>
+        {% if context and context.situacao == 'disp' %}
+        <main class="player" data-aos="zoom-in-down">
+            <div class="header">
+                <a href="#" class="button">
+                    <i class="fas fa-bars" aria-hidden="true"></i>
+                    <span class="sr-only">menu bar</span>
+                </a>
+                <p>Now Playing</p>
+                <a href="#" class="button">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <span class="sr-only">Search</span>
+                </a>
+            </div><!--  header  -->
+            <img src="{{ context.thumb }}" alt="album art" class="art"><!--  art  -->
+            <div class="info">
+                <h1>{{ context.estilo }}</h1>
+                <p>{{ context.nome }}</p>
+            </div><!--  info  -->
+            <div class="prog">
+                <div class="prog-time">
+                    <p class="left">{{ context.nascimento }}</p>
+                    <p class="right">{{ context.falecimento }}</p>
+                </div>
+                <div class="prog-bar">
+                    <div class="prog-bar-inner"></div>
+                </div>
+            </div><!--  progress  -->
+            <ul class="buttons">
+                <a href="#" class="button button-sm">
+                    <i class="fas fa-random fa-sm" aria-hidden="true"></i>
+                    <span class="sr-only">Shuffle</span>
+                </a>
+                <a href="#" class="button button-md">
+                    <i class="fas fa-step-backward" aria-hidden="true"></i>
+                    <span class="sr-only">Previous Music</span>
+                </a>
+                <a href="#" class="button button-lg">
+                    <i class="fas fa-pause fa-lg" aria-hidden="true" aria-hidden="true"></i>
+                    <span class="sr-only">Pause</span>
+                </a>
+                <a href="#" class="button button-md">
+                    <i class="fas fa-step-forward"></i>
+                    <span class="sr-only">Next Music</span>
+                </a>
+                <a href="#" class="button button-sm">
+                    <i class="fas fa-circle-notch fa-sm" aria-hidden="true"></i>
+                    <span class="sr-only">Repeat Song</span>
+                </a>
+            </ul><!--  buttons  -->
+            <div class="bar"></div><!--  bar  -->
+        </main>
+        <div class="arrow-section" data-aos="fade-down">
+            <a href="#section-01" id="js-section">
+                <img src="{{ url_for('static', filename='img/down-arrow.svg')}}" alt="">
+            </a>
+        </div>
+        {% endif %}
+    </section>
+    {% if context and context.situacao == 'disp' %}
+    <section class="s-info" id="section-01">
+        <div class="container">
+            <div class="main-info">
+                <div class="img-info">
+                    <img src="{{ context.thumb }}" alt="">
+                </div>
+                <div class="text-info">
+                    <h2>{{ context.nome }}</h2>
+                    <p>{{ context.biografia }}</p>
+                </div>
+            </div>
+            <div class="main-info-second">
+                <div class="img-info-second">
+                    <ul class="swiper swiper-thumb">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <li>
+                                    <img src="{{ context.imagens.thumb_wide }}" alt="">
+                                </li>
+                            </div>
+                            <div class="swiper-slide">
+                                <li>
+                                    <img src="{{ context.imagens.farnart_primary }}" alt="">
+                                </li>
+                            </div>
+                            <div class="swiper-slide">
+                                <li>
+                                    <img src="{{ context.imagens.farnart_second }}" alt="">
+                                </li>
+                            </div>
+                            <div class="swiper-slide">
+                                <li>
+                                    <img src="{{ context.imagens.farnart_try }}" alt="">
+                                </li>
+                            </div>
+                        </div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-pagination"></div>
+                    </ul>
+                </div>
+                <div class="text-info-second">
+                    <div class="img-social">
+                        <img src="{{ context.logo }}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    <script src="{{ url_for('static', filename='js/index.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js"
+        integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://kit.fontawesome.com/7d35781f0a.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#disribuidoras').select2({ maximumSelectionLength: 1 });
+        });
+        var swiper = new Swiper(".swiper-thumb", {
+            spaceBetween: 20,
+            autoplay: {
+				delay: 3000,
+				disableOnInteraction: false,
+				pauseOnMouseEnter: true,
+			},
+            pagination: {
+                el: ".swiper-pagination",
+                type: "progressbar",
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+        });
+        AOS.init({
+            duration: 1000,
+            once: true,
+            disable: 'mobile', //para a animação acontecer somente uma vez
+        });
+    </script>
+</body>
+
+</html>

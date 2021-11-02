@@ -5,12 +5,10 @@ import pandas as pd
 import os
 
 
-class BotCsv:
+class Artista:
     
-    def ler_nome_lojas(self, artista):
+    def buscar_informacoes_artista(self, artista):
         context = {}
-        self.distribuidor = 'teste'
-        # os.mkdir(f'./exportado/Distribuidor - {self.distribuidor}')
         response = requests.get(f'https://theaudiodb.com/api/v1/json/1/search.php?s={artista}')
         response = response.json()
         if response['artists']:
@@ -60,5 +58,3 @@ class BotCsv:
             }    
         return context
         
-    
-bot = BotCsv()    

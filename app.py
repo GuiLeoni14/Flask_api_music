@@ -14,12 +14,12 @@ def download_file():
     p = 'logo.png'
     return send_file(p, as_attachment=True)
 
-@app.route('/getapi', methods=['GET', 'POST'])
+@app.route('/search', methods=['GET', 'POST'])
 def buscar_valor():
     if request.method == 'POST':
         artista = request.form['input-search']
         print(artista)
-        context = api.BotCsv().ler_nome_lojas(artista=artista)
+        context = api.Artista().buscar_informacoes_artista(artista=artista)
         print(context)
         if context:
             return render_template('index.html', context=context)
